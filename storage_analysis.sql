@@ -114,11 +114,7 @@ INSERT INTO
 SELECT
     current_storage_usages.project_id,
     current_storage_usages.dataset_id,
-    REPLACE(
-        ifnull(storage_type, 'logical'),
-        'PHYSICAL',
-        'compressed'
-    ),
+    IFNULL(storage_type, "LOGICAL"),
     current_storage_usages.active_logical_gigabytes AS logic_active,
     current_storage_usages.long_term_logical_gigabytes,
     current_storage_usages.active_compressed_gigabytes,
