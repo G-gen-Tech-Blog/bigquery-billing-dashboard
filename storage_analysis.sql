@@ -60,7 +60,7 @@ FOR current_storage_usage IN (
     INSERT INTO storage_billing_model(project_id, dataset_id, storage_type)
     SELECT
       catalog_name AS project_id
-      ,schema_name AS dataset_id 
+      ,schema_name AS dataset_id
       ,option_value AS storage_type
     FROM
       `%s.region-asia-northeast1.INFORMATION_SCHEMA.SCHEMATA_OPTIONS`
