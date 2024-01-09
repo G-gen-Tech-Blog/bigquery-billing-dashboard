@@ -16,8 +16,8 @@
   - [ストレージ料金単価](https://cloud.google.com/bigquery/pricing#:~:text=Platform%20SKUs%20apply.-,Storage%20pricing,-Storage%20pricing%20is)
 ### 3.2 テーブルを作成
 - [3.1](#31-現在の料金単価を確認)で確認した料金単価になるように、以下のクエリを書き換えてから実行
-  - コンピュート料金単価
 ```sql
+-- コンピュート料金単価
 CREATE TABLE IF NOT EXISTS `bigquery_pricing.compute` (
     class,
     pay_as_you_go_pricing,
@@ -37,8 +37,8 @@ VALUES('on_demand', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
 ('enterprise', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
 ('enterprise_plus', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd'));
 ```
-  - ストレージ料金単価
 ```sql
+-- ストレージ料金単価
 CREATE TABLE IF NOT EXISTS `bigquery_pricing.storage` (
     class,
     pay_as_you_go_pricing,
