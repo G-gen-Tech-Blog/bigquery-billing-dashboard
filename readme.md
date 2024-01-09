@@ -1,3 +1,68 @@
+# 利用手順
+## 1. SQL クエリの入手
+- [GitHub](https://github.com/G-gen-Co-Ltd/da-solution-dashboard)
+## 2. マートの作成
+- GitHub から入手した SQLをベースに、スケジュールドクエリを作成する (参考情報: [クエリのスケジューリング](https://cloud.google.com/bigquery/docs/scheduling-queries?hl=ja))  
+※ クエリ発行タイミングは、利用者様で設定（頻度が多い場合、コンピューティングの料金が上がるため注意が必要です）
+## 3. 料金単価テーブルの作成
+### 3.1 現在の料金単価を確認
+以下の公式ドキュメント群から、asia-northeast1の料金単価を確認
+- コンピュート料金単価
+  - [オンデマンドクエリ料金単価](https://cloud.google.com/bigquery/pricing#:~:text=using%20Reservations.-,On%2Ddemand%20compute%20pricing,-By%20default%2C%20queries)
+  - [Standard Edition 料金単価](https://cloud.google.com/bigquery/pricing#:~:text=of%20the%20period.-,Standard%20Edition,-The%20following%20table)
+  - [Enterprise Edition 料金単価](https://cloud.google.com/bigquery/pricing#:~:text=1%20minute%20minimum-,Enterprise%20Edition,-The%20following%20table)
+  - [Enterprise Plus Edition 料金単価](https://cloud.google.com/bigquery/pricing#:~:text=for%203%20years-,Enterprise%20Plus%20Edition,-The%20following%20table)
+- ストレージ料金単価
+  - [ストレージ料金単価](https://cloud.google.com/bigquery/pricing#:~:text=Platform%20SKUs%20apply.-,Storage%20pricing,-Storage%20pricing%20is)
+### 3.2 テーブルを作成
+- [3.1](#31-現在の料金単価を確認)で確認した料金単価になるように、以下のクエリを書き換えてから実行
+  - コンピュート料金単価
+```sql
+CREATE TABLE IF NOT EXISTS `bigquery_pricing.compute` (
+    class,
+    pay_as_you_go_pricing,
+    region,
+    application_start_date,
+);
+-- xxxxの部分を料金単価に、yyyy-mm-ddの部分を確認した日付に書き換える
+INSERT `bigquery_pricing.compute`
+(
+    class,
+    pay_as_you_go_pricing,
+    region,
+    application_start_date,
+  )
+VALUES('on_demand', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
+('standard', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
+('enterprise', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
+('enterprise_plus', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd'));
+```
+  - ストレージ料金単価
+```sql
+CREATE TABLE IF NOT EXISTS `bigquery_pricing.storage` (
+    class,
+    pay_as_you_go_pricing,
+    region,
+    application_start_date,
+);
+-- wwww, xxxx, yyyy, zzzzの部分をActive logical storage, Long-term logical storage, Active physical storage, Long-term physical storageの料金単価に
+-- yyyy-mm-ddの部分を確認した日付に書き換える
+INSERT `bigquery_pricing.storage`
+(
+    active_logical_pricing,
+    long_term_logical_pricing,
+    active_compressed_pricing,
+    long_term_compressed_pricing,
+    region,
+    application_start_date,
+)
+VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
+```
+※ BigQuery の料金単価が更新された場合、コンピュート、ストレージ料金単価テーブルに新たに行を追加する
+## 4. ダッシュボードの作成
+- [テンプレートURL](https://lookerstudio.google.com/u/0/reporting/ac95599a-da77-42f0-8c17-f65ca9ee94d5/preview)からダッシュボードを作成する
+- データソースは [2.](#2-マートの作成) で作成したマートを参照する
+- 適宜グラフなどを調整する
 # Looker Studioカラム説明
 ## daily_editions_compute_pricing
 | No  | 列名           | 説明                                                    |
