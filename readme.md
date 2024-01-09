@@ -15,14 +15,14 @@
 - ストレージ料金単価
   - [ストレージ料金単価](https://cloud.google.com/bigquery/pricing#:~:text=Platform%20SKUs%20apply.-,Storage%20pricing,-Storage%20pricing%20is)
 ### 3.2 テーブルを作成
-- [3.1](#31-現在の料金単価を確認)で確認した料金単価になるように、以下のクエリを書き換えてから実行
+- [3.1](#31-現在の料金単価を確認)で確認した料金単価になるように、以下のSQL文を書き換えてから実行
 ```sql
 -- コンピュート料金単価
 CREATE TABLE IF NOT EXISTS `bigquery_pricing.compute` (
-    class,
-    pay_as_you_go_pricing,
-    region,
-    application_start_date,
+    class STRING,
+    pay_as_you_go_pricing FLOAT64,
+    region STRING,
+    application_start_date DATE
 );
 -- xxxxの部分を料金単価に、yyyy-mm-ddの部分を確認した日付に書き換える
 INSERT `bigquery_pricing.compute`
@@ -30,8 +30,8 @@ INSERT `bigquery_pricing.compute`
     class,
     pay_as_you_go_pricing,
     region,
-    application_start_date,
-  )
+    application_start_date
+)
 VALUES('on_demand', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
 ('standard', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
 ('enterprise', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
@@ -40,10 +40,12 @@ VALUES('on_demand', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
 ```sql
 -- ストレージ料金単価
 CREATE TABLE IF NOT EXISTS `bigquery_pricing.storage` (
-    class,
-    pay_as_you_go_pricing,
-    region,
-    application_start_date,
+    active_logical_pricing FLOAT64,
+    long_term_logical_pricing FLOAT64,
+    active_compressed_pricing FLOAT64,
+    long_term_compressed_pricing FLOAT64,
+    region STRING,
+    application_start_date DATE
 );
 -- wwww, xxxx, yyyy, zzzzの部分をActive logical storage, Long-term logical storage, Active physical storage, Long-term physical storageの料金単価に
 -- yyyy-mm-ddの部分を確認した日付に書き換える
@@ -54,7 +56,7 @@ INSERT `bigquery_pricing.storage`
     active_compressed_pricing,
     long_term_compressed_pricing,
     region,
-    application_start_date,
+    application_start_date
 )
 VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 ```
