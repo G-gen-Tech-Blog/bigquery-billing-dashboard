@@ -24,8 +24,11 @@
 - コンピュート料金単価
   - [オンデマンドクエリ料金単価](https://cloud.google.com/bigquery/pricing#:~:text=using%20Reservations.-,On%2Ddemand%20compute%20pricing,-By%20default%2C%20queries)
   - [Standard Edition 料金単価](https://cloud.google.com/bigquery/pricing#:~:text=of%20the%20period.-,Standard%20Edition,-The%20following%20table)
+    - Commitment modelが「Pay as you go」の料金を参照
   - [Enterprise Edition 料金単価](https://cloud.google.com/bigquery/pricing#:~:text=1%20minute%20minimum-,Enterprise%20Edition,-The%20following%20table)
+    - Commitment modelが「Pay as you go」の料金を参照
   - [Enterprise Plus Edition 料金単価](https://cloud.google.com/bigquery/pricing#:~:text=for%203%20years-,Enterprise%20Plus%20Edition,-The%20following%20table)
+    - Commitment modelが「Pay as you go」の料金を参照
 - ストレージ料金単価
   - [ストレージ料金単価](https://cloud.google.com/bigquery/pricing#:~:text=Platform%20SKUs%20apply.-,Storage%20pricing,-Storage%20pricing%20is)
 ### 3.2 テーブルを作成
