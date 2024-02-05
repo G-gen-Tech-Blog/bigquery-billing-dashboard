@@ -99,7 +99,7 @@ VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 2.  [4. スケジュールドクエリの作成](#4-スケジュールドクエリの作成) で作成したマートテーブルを選択し、「追加」をクリック
 ### 5.3 サービスアカウントの設定（任意）
 - BigQueryのテーブルへのアクセスをサービスアカウント経由で行いたい場合は、[1. サービスアカウントの作成](#1-サービスアカウントの作成) に記載の「sa-for-looker-studio」を設定
-- 設定方法は、(公式ドキュメント)[https://support.google.com/looker-studio/answer/10835295?hl=ja&ref_topic=10388739]を参照
+- 設定方法は、[公式ドキュメント](https://support.google.com/looker-studio/answer/10835295?hl=ja&ref_topic=10388739)を参照
 # BigQueryテーブル説明
 ## daily_editions_compute_pricing
 | No  | 列名           | 説明                                                    |
