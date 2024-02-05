@@ -92,8 +92,12 @@ VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 | 6   | slot_analysis                  | slot_analysis.sql                  | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
 | 7   | storage_analysis               | storage_analysis.sql               | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
 ## 5. ダッシュボードの作成
-- [テンプレートURL](https://lookerstudio.google.com/u/0/reporting/ac95599a-da77-42f0-8c17-f65ca9ee94d5/preview) からダッシュボードを作成
-- データソースは [4. スケジュールドクエリの作成](#4-スケジュールドクエリの作成) で作成したマートテーブルを参照
+### 5.1 Looker Studioのテンプレートを開く
+- [テンプレートURL](https://lookerstudio.google.com/u/0/reporting/ac95599a-da77-42f0-8c17-f65ca9ee94d5/preview) 
+### 5.2 ダッシュボードの参照テーブルを変更
+1. 右上の [自分のデータを使用] をクリック
+2. [4. スケジュールドクエリの作成](#4-スケジュールドクエリの作成) で作成したマートテーブルを選択し、「追加」をクリック
+### 5.3 サービスアカウントの設定（任意）
 - BigQueryのテーブルへのアクセスをサービスアカウント経由で行いたい場合は、[1. サービスアカウントの作成](#1-サービスアカウントの作成) に記載の「sa-for-looker-studio」を設定
 # BigQueryテーブル説明
 ## daily_editions_compute_pricing
