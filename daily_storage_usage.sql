@@ -55,7 +55,7 @@ END;
 END FOR;
 
 INSERT INTO
-    `mart.daily_storage_pricing`(
+    `mart.daily_storage_usage`(
         project_id,
         logic_active,
         logic_long_term,
