@@ -1,15 +1,43 @@
 # 利用手順
+本利用手順では、株式会社 G-gen が発行する「BigQuery Cost Analyzer」を自社環境にデプロイする手順を解説します。<br>自社の Google Cloud (BigQuery) に設定を行い、Looker Studio のテンプレートを使用しダッシュボードを作成します。
 ## 1. サービスアカウントの作成
 - [サービスアカウントの作成手順](https://cloud.google.com/iam/docs/service-accounts-create?hl=ja#iam-service-accounts-create-console) を参考にサービスアカウントを作成
 - 以下、作成するサービスアカウントの設定値
 
-| No  | サービスアカウント名 | 割り当てるロール                                                                                                                                                                                                                                                                                                             | 説明                                            |
-| --- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| 1   | sa-for-bq-job        | 組織レベルのroles/bigquery.resourceViewer                                                                                                                                                                                                                                                                                    | スケジュールドクエリ用                          |
-|     |                      | 組織レベルのroles/bigquery.metadataViewer                                                                                                                                                                                                                                                                                    |                                                 |
-|     |                      | プロジェクトレベルのroles/bigquery.dataEditor                                                                                                                                                                                                                                                                                |                                                 |
-|     |                      | プロジェクトレベルのoles/bigquery.jobUser                                                                                                                                                                                                                                                                                    |                                                 |
-| 2   | sa-for-looker-studio | [公式ドキュメント](https://support.google.com/looker-studio/answer/10835295?hl=ja#zippy=%2C%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%AE%E5%86%85%E5%AE%B9:~:text=Looker%20Studio%20%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%20%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B)を参照 | Looker Studio からBigQuery へのアクセス用(任意) |
+<table>
+<thead>
+<tr>
+<th scope="col">No</th>
+<th scope="col">サービスアカウント名</th>
+<th scope="col">割り当てるロール</th>
+<th scope="col">説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowspan="4">1</td>
+<td rowspan="4">sa-for-bq-job</td>
+<td>組織レベルのroles/bigquery.resourceViewe</td>
+<td rowspan="4">スケジュールドクエリ用</td>
+</tr>
+<tr>
+<td>組織レベルのroles/bigquery.metadataViewer</td>
+</tr>
+<tr>
+<td>プロジェクトレベルのroles/bigquery.dataEditor</td>
+</tr>
+<tr>
+<td>プロジェクトレベルのroles/bigquery.jobUser</td>
+</tr>
+<tr>
+<td>2</td>
+<td>sa-for-looker-studio</td>
+<td><a href="https://support.google.com/looker-studio/answer/10835295?hl=ja#zippy=%2C%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%AE%E5%86%85%E5%AE%B9">公式ドキュメント</a>を参照</td>
+<td>Looker Studio からBigQuery へのアクセス用(任意)</td>
+</tr>
+</tbody>
+</table>
+
 ## 2. データセットの作成
 - [データセット作成手順](https://cloud.google.com/bigquery/docs/datasets?hl=ja) を参考にデータセットを作成
 - 以下、作成するデータセットの設定値
@@ -81,6 +109,7 @@ VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 ## 4. スケジュールドクエリの作成
 - 本サイトから入手したSQLをベースに、スケジュールドクエリを作成 (参考情報: [クエリのスケジューリング](https://cloud.google.com/bigquery/docs/scheduling-queries?hl=ja))
 - 以下、作成するスケジュールドクエリの設定値
+  - 「スケジュールドクエリ名」、「頻度」は必要に応じて変更をお願いします
 
 | No  | スケジュールドクエリ名         | クエリ内容                         | 頻度             | リージョン      | サービスアカウント |
 | --- | ------------------------------ | ---------------------------------- | ---------------- | --------------- | ------------------ |
