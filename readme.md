@@ -1,9 +1,23 @@
 # 利用手順
-## 1. SQL クエリの入手
-- [GitHub](https://github.com/G-gen-Co-Ltd/da-solution-dashboard)
-## 2. マートの作成
-- GitHub から入手した SQLをベースに、スケジュールドクエリを作成する (参考情報: [クエリのスケジューリング](https://cloud.google.com/bigquery/docs/scheduling-queries?hl=ja))  
-※ クエリ発行タイミングは、利用者様で設定（頻度が多い場合、コンピューティングの料金が上がるため注意が必要です）
+## 1. サービスアカウントの作成
+- [サービスアカウントの作成手順](https://cloud.google.com/iam/docs/service-accounts-create?hl=ja#iam-service-accounts-create-console) を参考にサービスアカウントを作成
+- 以下、作成するサービスアカウントの設定値
+
+| No  | サービスアカウント名 | 割り当てるロール                                                                                                                                                  | 説明                                            |
+| --- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| 1   | sa-for-bq-job        | 組織レベルのroles/bigquery.resourceViewer                                                                                                                         | スケジュールドクエリ用                          |
+|     |                      | 組織レベルのroles/bigquery.metadataViewer                                                                                                                         |                                                 |
+|     |                      | プロジェクトレベルのroles/bigquery.dataEditor                                                                                                                     |                                                 |
+|     |                      | プロジェクトレベルのoles/bigquery.jobUser                                                                                                                         |                                                 |
+| 2   | sa-for-looker-studio | [公式ドキュメント](https://support.google.com/looker-studio/answer/10835295?hl=ja#zippy=%2C%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%AE%E5%86%85%E5%AE%B9)を参照 | Looker Studio からBigQuery へのアクセス用(任意) |
+## 2. データセットの作成
+- [データセット作成手順](https://cloud.google.com/bigquery/docs/datasets?hl=ja) を参考にデータセットを作成
+- 以下、作成するデータセットの設定値
+
+| No  | データセット ID  | ロケーション タイプ | 説明                             |
+| --- | ---------------- | ------------------- | -------------------------------- |
+| 1   | bigquery_pricing | asia-northeast1     | 料金単価格納用                   |
+| 2   | mart             | asia-northeast1     | スケジュールドクエリの結果格納用 |
 ## 3. 料金単価テーブルの作成
 ### 3.1 現在の料金単価を確認
 以下の公式ドキュメント群から、asia-northeast1の料金単価を確認
@@ -15,7 +29,7 @@
 - ストレージ料金単価
   - [ストレージ料金単価](https://cloud.google.com/bigquery/pricing#:~:text=Platform%20SKUs%20apply.-,Storage%20pricing,-Storage%20pricing%20is)
 ### 3.2 テーブルを作成
-- [3.1](#31-現在の料金単価を確認)で確認した料金単価になるように、以下のSQL文を書き換えてから実行
+- [3.1 現在の料金単価を確認](#31-現在の料金単価を確認) で確認した料金単価になるように、以下のSQL文を書き換えてから実行
 ```sql
 -- コンピュート料金単価
 CREATE TABLE IF NOT EXISTS `bigquery_pricing.compute` (
@@ -60,12 +74,25 @@ INSERT `bigquery_pricing.storage`
 )
 VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 ```
-※ BigQuery の料金単価が更新された場合、コンピュート、ストレージ料金単価テーブルに新たに行を追加する
-## 4. ダッシュボードの作成
-- [テンプレートURL](https://lookerstudio.google.com/u/0/reporting/ac95599a-da77-42f0-8c17-f65ca9ee94d5/preview)からダッシュボードを作成する
-- データソースは [2.](#2-マートの作成) で作成したマートを参照する
-- 適宜グラフなどを調整する
-# Looker Studioカラム説明
+※ BigQuery の料金単価が更新された場合、コンピュート、ストレージ料金単価テーブルに新たに行を追加
+## 4. スケジュールドクエリの作成
+- 本サイトから入手したSQLをベースに、スケジュールドクエリを作成 (参考情報: [クエリのスケジューリング](https://cloud.google.com/bigquery/docs/scheduling-queries?hl=ja))
+- 以下、作成するスケジュールドクエリの設定値
+
+| No  | スケジュールドクエリ名         | クエリ内容                         | 頻度             | リージョン      | サービスアカウント |
+| --- | ------------------------------ | ---------------------------------- | ---------------- | --------------- | ------------------ |
+| 1   | project_id                     | daily_editions_compute_pricing.sql | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
+| 2   | daily_ondemand_compute_pricing | daily_ondemand_compute_pricing.sql | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
+| 3   | daily_storage_usage            | daily_storage_usage.sql            | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
+| 4   | monthly_storage_pricing        | monthly_storage_pricing.sql        | 毎日、21:30(UTC) | asia-northeast1 | sa-for-bq-job      |
+| 5   | query_analysis                 | query_analysis.sql                 | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
+| 6   | slot_analysis                  | slot_analysis.sql                  | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
+| 7   | storage_analysis               | storage_analysis.sql               | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
+## 5. ダッシュボードの作成
+- [テンプレートURL](https://lookerstudio.google.com/u/0/reporting/ac95599a-da77-42f0-8c17-f65ca9ee94d5/preview) からダッシュボードを作成
+- データソースは [4. スケジュールドクエリの作成](#4-スケジュールドクエリの作成) で作成したマートテーブルを参照
+- BigQueryのテーブルへのアクセスをサービスアカウント経由で行いたい場合は、[1. サービスアカウントの作成](#1-サービスアカウントの作成) に記載の「sa-for-looker-studio」を設定
+# BigQueryテーブル説明
 ## daily_editions_compute_pricing
 | No  | 列名           | 説明                                                    |
 | --- | -------------- | ------------------------------------------------------- |
