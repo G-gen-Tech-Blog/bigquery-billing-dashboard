@@ -128,12 +128,12 @@ INSERT INTO res(reservation_id, baseline, period_start, edition)
     and t.project_number = t2.project_number
 """,
     REPLACE(
-        REGEXP_EXTRACT(job.reservation_id, r '^.*:'),
+        REGEXP_EXTRACT(job.reservation_id, r'^.*:'),
         ':',
         ''
     ),
     REPLACE(
-        REGEXP_EXTRACT(job.reservation_id, r '^.*:'),
+        REGEXP_EXTRACT(job.reservation_id, r'^.*:'),
         ':',
         ''
     )
