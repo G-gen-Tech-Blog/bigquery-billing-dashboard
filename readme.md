@@ -84,7 +84,7 @@ VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 
 | No  | スケジュールドクエリ名         | クエリ内容                         | 頻度             | リージョン      | サービスアカウント |
 | --- | ------------------------------ | ---------------------------------- | ---------------- | --------------- | ------------------ |
-| 1   | project_id                     | daily_editions_compute_pricing.sql | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
+| 1   | daily_editions_compute_pricing | daily_editions_compute_pricing.sql | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
 | 2   | daily_ondemand_compute_pricing | daily_ondemand_compute_pricing.sql | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
 | 3   | daily_storage_usage            | daily_storage_usage.sql            | 毎日、21:00(UTC) | asia-northeast1 | sa-for-bq-job      |
 | 4   | monthly_storage_pricing        | monthly_storage_pricing.sql        | 毎日、21:30(UTC) | asia-northeast1 | sa-for-bq-job      |
