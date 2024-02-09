@@ -105,7 +105,6 @@ INSERT `bigquery_pricing.storage`
 )
 VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 ```
-※ BigQuery の料金単価が更新された場合、コンピュート、ストレージ料金単価テーブルに新たに行を追加
 ## 4. スケジュールドクエリの作成
 - 本サイトから入手したSQLをベースに、スケジュールドクエリを作成 (参考情報: [クエリのスケジューリング](https://cloud.google.com/bigquery/docs/scheduling-queries?hl=ja))
 - 以下、作成するスケジュールドクエリの設定値
@@ -129,6 +128,10 @@ VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 ### 5.3 サービスアカウントの設定（任意）
 - BigQueryのテーブルへのアクセスをサービスアカウント経由で行いたい場合は、[1. サービスアカウントの作成](#1-サービスアカウントの作成) に記載の「sa-for-looker-studio」を設定
 - 設定方法は、[公式ドキュメント](https://support.google.com/looker-studio/answer/10835295?hl=ja&ref_topic=10388739)を参照
+# 料金改定時の更新手順
+## 料金単価テーブルの更新
+- コンピュート、ストレージ料金単価テーブルそれぞれに新たにレコードを追加
+- レコード追加方法は、[3.2 テーブルを作成](#32-テーブルを作成)を参照
 # BigQueryテーブル説明
 ## daily_editions_compute_pricing
 | No  | 列名           | 説明                                                    |
