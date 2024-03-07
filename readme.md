@@ -133,10 +133,38 @@ VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
 
 # 運用・メンテナンス
 BigQuery の費用が改定された場合「3. 料金単価テーブルの作成」で作成した料金単価テーブルを更新し、ダッシュボードで適切な費用が表示されるよう更新を行います。
-## 料金単価テーブルの更新
-- 「3.1 現在の料金単価を確認」を参照し、最新の料金単価を確認する
-- 更新されている単価がある場合、コンピュート、ストレージ料金単価テーブルそれぞれに新たな単価のレコードを追加
-  - レコード追加方法は、[3.2 テーブルを作成](#32-テーブルを作成)を参照
+## 料金単価テーブルの更新手順
+### 1.「3.1 現在の料金単価を確認」を参照し、最新の料金単価を確認
+### 2. 以下のSQLを実行
+```sql
+-- コンピュート料金単価
+-- xxxxの部分を料金単価に、yyyy-mm-ddの部分を確認した日付に書き換える
+INSERT `bigquery_pricing.compute`
+(
+    class,
+    pay_as_you_go_pricing,
+    region,
+    application_start_date
+)
+VALUES('on_demand', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
+('standard', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
+('enterprise', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd')),
+('enterprise_plus', xxxx, 'asia-northeast1', DATE('yyyy-mm-dd'));
+
+-- ストレージ料金単価
+-- wwww, xxxx, yyyy, zzzzの部分をActive logical storage, Long-term logical storage, Active physical storage, Long-term physical storageの料金単価に
+-- yyyy-mm-ddの部分を確認した日付に書き換える
+INSERT `bigquery_pricing.storage`
+(
+    active_logical_pricing,
+    long_term_logical_pricing,
+    active_compressed_pricing,
+    long_term_compressed_pricing,
+    region,
+    application_start_date
+)
+VALUES(wwww, xxxx, yyyy, zzzz, 'asia-northeast1', DATE('yyyy-mm-dd'));
+```
 <br>
 <br>
 
